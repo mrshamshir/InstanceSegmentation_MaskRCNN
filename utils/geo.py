@@ -114,9 +114,9 @@ def clip(df: GDF,
     elif explode_mp_ and keep_biggest_poly_:
         raise ValueError('You can only use one of "explode_mp_" or "keep_biggest_poly_"!')
     elif explode_mp_:
-        return geo_explode_mp(df)
+        return explode_mp(df)
     elif keep_biggest_poly_:
-        return geo_keep_biggest_poly(df)
+        return keep_biggest_poly(df)
 
 
 def reclassify_col(df: Union[GDF, DF],
@@ -316,7 +316,7 @@ def cut_chip_geometries(vector_df, raster_width, raster_height, raster_transform
             break
 
         # # Clip geometry to chip
-        chip_df = vector_df.pipe(geo_clip, clip_poly=chip_poly, keep_biggest_poly_=True)
+        chip_df = vector_df.pipe(clip, clip_poly=chip_poly, keep_biggest_poly_=True)
         if not all(chip_df.geometry.is_empty):
             chip_df.geometry = chip_df.simplify(1, preserve_topology=True)
         else:
@@ -329,9 +329,9 @@ def cut_chip_geometries(vector_df, raster_width, raster_height, raster_transform
 
         # Transform to chip pixelcoordinates and invert y-axis for COCO format.
         if not all(chip_df.geometry.is_empty):
-            chip_df = chip_df.pipe(geo_to_pixelcoords, reference_bounds=chip_poly.bounds, scale=True,
+            chip_df = chip_df.pipe(to_pixelcoords, reference_bounds=chip_poly.bounds, scale=True,
                                    ncols=chip_width, nrows=chip_height)
-            chip_df = chip_df.pipe(geo_invert_y_axis, reference_height=chip_height)
+            chip_df = chip_df.pipe(invert_y_axis, reference_height=chip_height)
         else:
             continue
 
