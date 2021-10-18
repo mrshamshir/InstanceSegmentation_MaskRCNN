@@ -12,7 +12,7 @@ from matplotlib.collections import PatchCollection
 from descartes import PolygonPatch
 from PIL import Image as pilimage
 
-# import utils.other
+from utils.other import load_json
 
 
 def train_test_split(chip_dfs: Dict, test_size=0.2, seed=1) -> Tuple[Dict, Dict]:
