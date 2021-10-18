@@ -12,8 +12,10 @@ from matplotlib.collections import PatchCollection
 from descartes import PolygonPatch
 from PIL import Image as pilimage
 
+# import utils.other
 
-def coco_train_test_split(chip_dfs: Dict, test_size=0.2, seed=1) -> Tuple[Dict, Dict]:
+
+def train_test_split(chip_dfs: Dict, test_size=0.2, seed=1) -> Tuple[Dict, Dict]:
     """Split chips into training and test set.
     Args:
         chip_dfs: Dictionary containing key (filename of the chip) value (dataframe with
@@ -34,7 +36,7 @@ def coco_train_test_split(chip_dfs: Dict, test_size=0.2, seed=1) -> Tuple[Dict, 
     return train_chip_dfs, val_chip_dfs
 
 
-def coco_format_coco(chip_dfs: Dict, chip_width: int, chip_height: int, multi=False):
+def format_coco(chip_dfs: Dict, chip_width: int, chip_height: int, multi=False):
     """Format train and test chip geometries to COCO json format.
     Args:
         chip_dfs: Dictionary containing key (filename of the chip) value (dataframe with
@@ -133,7 +135,7 @@ def coco_format_coco(chip_dfs: Dict, chip_width: int, chip_height: int, multi=Fa
     return cocojson
 
 
-def coco_move_coco_val_images(inpath_train_folder, val_chips_list):
+def move_coco_val_images(inpath_train_folder, val_chips_list):
     """Move validation chip images to val folder (applies train/val split on images)
     Args:
         inpath_train_folder: Filepath to the training COCO image chip "train" folder
@@ -146,7 +148,7 @@ def coco_move_coco_val_images(inpath_train_folder, val_chips_list):
         Path(rf'{inpath_train_folder}/{chip.replace("val", "train")}.jpg').replace(rf'{outpath_val_folder}/{chip}.jpg')
 
 
-def coco_coco_to_shapely(inpath_json: Union[Path, str],
+def coco_to_shapely(inpath_json: Union[Path, str],
                     categories: List[int] = None) -> Dict:
     """Transforms COCO annotations to shapely geometry format.
     Args:
@@ -157,7 +159,7 @@ def coco_coco_to_shapely(inpath_json: Union[Path, str],
         Dictionary of image key and shapely Multipolygon.
     """
 
-    data = other_load_json(inpath_json)
+    data = load_json(inpath_json)
     if categories is not None:
         # Get image ids/file names that contain at least one annotation of the selected categories.
         image_ids = sorted(list(set([x['image_id'] for x in data['annotations'] if x['category_id'] in categories])))
@@ -181,9 +183,9 @@ def coco_coco_to_shapely(inpath_json: Union[Path, str],
     return extracted_geometries
 
 
-def coco_plot_coco(inpath_json, inpath_image_folder, start=0, end=2):
+def plot_coco(inpath_json, inpath_image_folder, start=0, end=2):
     """Plot COCO annotations and image chips"""
-    extracted = coco_coco_to_shapely(inpath_json)
+    extracted = coco_to_shapely(inpath_json)
 
     for key in sorted(extracted.keys())[start:end]:
         print(key)
