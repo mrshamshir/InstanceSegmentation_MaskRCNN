@@ -1,8 +1,7 @@
 # img.py
 
 from typing import Tuple, Generator, List, Union
-!pip install rasterio
-!pip install geopandas
+
 import rasterio.windows
 from rasterio.windows import Window
 from shapely.geometry import Polygon
@@ -20,7 +19,7 @@ from skimage import exposure, img_as_ubyte
 from tqdm import tqdm
 
 
-def img_get_chip_windows(raster_width: int,
+def get_chip_windows(raster_width: int,
                      raster_height: int,
                      raster_transform,
                      chip_width: int=256,
@@ -57,7 +56,7 @@ def img_get_chip_windows(raster_width: int,
         yield (chip_window, chip_transform, chip_poly)
 
 
-def img_cut_chip_images(inpath_raster: Union[Path, str],
+def cut_chip_images(inpath_raster: Union[Path, str],
                     outpath_chipfolder: Union[Path, str],
                     chip_names: List[str],
                     chip_windows: List,
