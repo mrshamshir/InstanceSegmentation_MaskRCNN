@@ -6,7 +6,7 @@ import pickle
 import json
 
 
-def other_new_pickle(outpath: Path, data):
+def new_pickle(outpath: Path, data):
     """(Over)write data to new pickle file."""
     outpath.parent.mkdir(parents=True, exist_ok=True)
     with open(outpath, "wb") as f:
@@ -14,13 +14,13 @@ def other_new_pickle(outpath: Path, data):
     print(f'Writing new pickle file... {outpath.name}')
 
 
-def other_load_pickle(inpath: Path):
+def load_pickle(inpath: Path):
     print(f'Loading from existing pickle file... {inpath.name}')
     with open(inpath, "rb") as f:
         return pickle.load(f)
 
 
-def other_new_json(outpath: Path, data):
+def new_json(outpath: Path, data):
     """(Over)write data to new json file."""
     outpath.parent.mkdir(parents=True, exist_ok=True)
     with open(outpath, "w") as f:
@@ -28,7 +28,7 @@ def other_new_json(outpath: Path, data):
     print(f'Writing new json file... {outpath.name}')
 
 
-def other_load_json(inpath: Path):
+def load_json(inpath: Path):
     print(f'Loading from existing json file... {inpath.name}')
     with open(inpath, "r") as f:
         return json.load(f)
