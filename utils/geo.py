@@ -12,7 +12,7 @@ import rasterio.crs
 import geopandas as gpd
 from tqdm import tqdm
 
-# import utils.img
+from utils.img import get_chip_windows
 
 def buffer_zero(ingeo: Union[GDF, Polygon]) -> Union[GDF, Polygon]:
     """Make invalid polygons (due to self-intersection) valid by buffering with 0."""
@@ -298,7 +298,7 @@ def cut_chip_geometries(vector_df, raster_width, raster_height, raster_transform
     Returns: Dictionary containing the final chip_df, chip_window, chip_transform, chip_poly objects.
     """
 
-    generator_window_bounds = img_get_chip_windows(raster_width=raster_width,
+    generator_window_bounds = get_chip_windows(raster_width=raster_width,
                                                          raster_height=raster_height,
                                                          raster_transform=raster_transform,
                                                          chip_width=chip_width,
